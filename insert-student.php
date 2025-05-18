@@ -21,6 +21,6 @@ $sqlInsert = "
     students (name, birth_date) VALUES 
     ('{$student->getName()}', '{$student->getBirthDate()->format('Y-m-d')}');";
 
-echo $sqlInsert;
+echo $sqlInsert . PHP_EOL;
 
 var_dump($pdo->exec($sqlInsert));
