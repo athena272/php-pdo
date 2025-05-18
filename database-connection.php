@@ -1,7 +1,9 @@
 <?php
 
+$databasePath = __DIR__ . DIRECTORY_SEPARATOR . 'database.sqlite';
+
 try {
-    $pdo = new PDO('sqlite:database.sqlite');
+    $pdo = new PDO("sqlite:$databasePath");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo "✅ Successfully connected to the SQLite database.";
 } catch (PDOException $e) {
