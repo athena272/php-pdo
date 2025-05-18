@@ -1,0 +1,18 @@
+{
+    "name": "athena272/php-pdo",
+    "description": "Make a connection with SQLite",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Athena272\\PhpPdo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "athena272",
+            "email": "guilhermera272@gmail.com"
+        }
+    ],
+    "require": {}
+}
