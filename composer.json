@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Athena272\\PhpPdo\\": "src/"
+            "Athena272\\Pdo\\": "src/"
         }
     },
     "authors": [
