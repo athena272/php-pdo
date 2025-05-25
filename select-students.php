@@ -9,12 +9,24 @@ $databasePath = __DIR__ . DIRECTORY_SEPARATOR . 'database.sqlite';
 try {
     $pdo = new PDO("sqlite:$databasePath");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "✅ Successfully connected to the SQLite database.";
+    echo "✅ Successfully connected to the SQLite database." . PHP_EOL;
 } catch (PDOException $e) {
-    echo "❌ Failed to connect to the SQLite database: " . $e->getMessage();
+    echo "❌ Failed to connect to the SQLite database: " . $e->getMessage() . PHP_EOL;
     exit();
 }
 
 $sqlSelect = "SELECT * FROM students";
 
-$result = $pdo->query($sqlSelect);
+$statement = $pdo->query($sqlSelect);
+$studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
+$studentList = [];
+
+foreach ($studentDataList as $studentData) {
+    $studentList[] = new Student(
+        $studentData['id'],
+        $studentData['name'],
+        new DateTimeImmutable($studentData['birth_date'])
+    );
+}
+
+var_dump($studentList);
