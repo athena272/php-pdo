@@ -22,11 +22,15 @@ $studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
 $studentList = [];
 
 foreach ($studentDataList as $studentData) {
-    $studentList[] = new Student(
-        $studentData['id'],
-        $studentData['name'],
-        new DateTimeImmutable($studentData['birth_date'])
-    );
+    try {
+        $studentList[] = new Student(
+            $studentData['id'],
+            $studentData['name'],
+            new DateTimeImmutable($studentData['birth_date'])
+        );
+    } catch (DateMalformedStringException $e) {
+        echo "❌ Error: " . $e->getMessage() . PHP_EOL;
+    }
 }
 
 var_dump($studentList);
