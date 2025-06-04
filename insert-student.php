@@ -15,12 +15,17 @@ try {
     exit();
 }
 
-$student = new Student(null, 'Vinicius Dias', new DateTimeImmutable('1997-10-15'));
-$sqlInsert = "
-    INSERT INTO 
-    students (name, birth_date) VALUES 
-    ('{$student->getName()}', '{$student->getBirthDate()->format('Y-m-d')}');";
+$student = new Student(
+    null,
+    'Vinicius Dias',
+    new DateTimeImmutable('1997-10-15')
+);
+$sqlInsert = "INSERT INTO students (name, birth_date) VALUES (?, ?)";
+$statement = $pdo->prepare($sqlInsert);
+$statement->bindValue(1, $student->getName());
+$statement->bindValue(2, $student->getBirthDate()->format('Y-m-d'));
+$statement->execute();
 
 echo $sqlInsert . PHP_EOL;
 
-var_dump($pdo->exec($sqlInsert));
+//var_dump($pdo->exec($sqlInsert));
