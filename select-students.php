@@ -18,19 +18,18 @@ try {
 $sqlSelect = "SELECT * FROM students";
 
 $statement = $pdo->query($sqlSelect);
-$studentDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
-$studentList = [];
-
-foreach ($studentDataList as $studentData) {
+while ($studentData = $statement->fetch(PDO::FETCH_ASSOC)) {
     try {
-        $studentList[] = new Student(
+        $student = new Student(
             $studentData['id'],
             $studentData['name'],
             new DateTimeImmutable($studentData['birth_date'])
         );
+
+        echo $student->age() . PHP_EOL;
     } catch (DateMalformedStringException $e) {
         echo "❌ Error: " . $e->getMessage() . PHP_EOL;
     }
 }
+var_dump($statement->fetchColumn(1));
 
-var_dump($studentList);
