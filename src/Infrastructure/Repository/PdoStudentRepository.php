@@ -29,11 +29,14 @@ class PdoStudentRepository implements StudentRepository
 
     public function save(Student $student): bool
     {
-        // TODO: Implement save() method.
+
     }
 
     public function remove(Student $student): bool
     {
-        // TODO: Implement remove() method.
+        $statement = $this->connection->prepare('DELETE FROM students WHERE id = ?');
+        $statement->bindValue(1, $student->getId(), PDO::PARAM_INT);
+
+        return $statement->execute();
     }
 }
