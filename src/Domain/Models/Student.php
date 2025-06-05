@@ -4,6 +4,7 @@ namespace Athena272\Pdo\Domain\Models;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use DomainException;
 
 class Student
 {
@@ -23,9 +24,23 @@ class Student
         return $this->id;
     }
 
+    public function setId(int $id): void
+    {
+        if (!is_null($this->id)) {
+            throw new DomainException(message: "You can only set an ID once");
+        }
+
+        $this->id = $id;
+    }
+
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
     public function getBirthDate(): DateTimeInterface
