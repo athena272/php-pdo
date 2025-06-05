@@ -23,5 +23,4 @@ if($statement->execute()) {
 
 echo $sqlInsert . PHP_EOL;
 
-
 //var_dump($pdo->exec($sqlInsert));
