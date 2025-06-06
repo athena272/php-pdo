@@ -75,7 +75,7 @@ class PdoStudentRepository implements StudentRepository
         if ($success) {
             $student->setId($this->connection->lastInsertId());
         }
-        
+
         return $success;
     }
 
