@@ -72,6 +72,8 @@ class PdoStudentRepository implements StudentRepository
             ':birth_date' => $student->getBirthDate()->format('Y-m-d')
         ]);
 
+        $student->setId($this->connection->lastInsertId());
+
         return $success;
     }
 
