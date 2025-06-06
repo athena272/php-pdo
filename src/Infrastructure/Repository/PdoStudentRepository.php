@@ -4,7 +4,6 @@ namespace Athena272\Pdo\Infrastructure\Repository;
 
 use Athena272\Pdo\Domain\Models\Student;
 use Athena272\Pdo\Domain\Repository\StudentRepository;
-use Athena272\Pdo\Infrastructure\Persistence\ConnectionCreator;
 use DateTimeInterface;
 use PDO;
 use PDOStatement;
@@ -14,9 +13,9 @@ class PdoStudentRepository implements StudentRepository
 {
     private PDO $connection;
 
-    public function __construct()
+    public function __construct(PDO $connection)
     {
-        $this->connection = ConnectionCreator::createConnection();
+        $this->connection = $connection;
     }
 
     public function allStudents(): array
