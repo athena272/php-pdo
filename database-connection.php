@@ -6,8 +6,8 @@ use Athena272\Pdo\Infrastructure\Persistence\ConnectionCreator;
 
 $connection = ConnectionCreator::createConnection();
 
-$connection->exec("INSERT INTO phones (area_code, number, student_id) VALUES ('24', '999999999', 1),('21', '222222222', 1);");
-exit();
+//$connection->exec("INSERT INTO phones (area_code, number, student_id) VALUES ('24', '999999999', 1),('21', '222222222', 1);");
+//exit();
 
 $createTableSql = '
     CREATE TABLE IF NOT EXISTS students (
