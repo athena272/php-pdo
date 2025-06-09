@@ -14,6 +14,7 @@ class ConnectionCreator
         try {
             $pdo = new PDO("sqlite:$databasePath");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             echo "✅ Successfully connected to the SQLite database." . PHP_EOL;
             return $pdo;
         } catch (PDOException $e) {
