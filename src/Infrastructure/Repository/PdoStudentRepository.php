@@ -122,12 +122,15 @@ class PdoStudentRepository implements StudentRepository
         return $statement->execute();
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     */
     public function studentsWithPhones(): array
     {
         $sqlQuery = 'SELECT students.id, 
                             students.name, 
                             students.birth_date, 
-                            phones.id AS phones_id,
+                            phones.id AS phone_id,
                             phones.area_code,
                             phones.number
                             FROM students 
@@ -137,9 +140,16 @@ class PdoStudentRepository implements StudentRepository
         $studentList = [];
 
         foreach ($result as $student) {
-            if (array_key_exists($student['id'], $studentList)) {
-                $phone = new Phone($student['id'], $student['area_code'], $student['number']);
+            if (!array_key_exists($student['id'], $studentList)) {
+                $studentList[$student['id']] = new Student(
+                    $student['id'],
+                    $student['name'],
+                    new DateTimeImmutable($student['birth_date']),
+                );
             }
+
+            $phone = new Phone($student['phone_id'], $student['area_code'], $student['number']);
+            $studentList[$student['id']]->addPhone($phone);
         }
 
         return $studentList;
