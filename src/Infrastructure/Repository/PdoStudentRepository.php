@@ -87,7 +87,7 @@ class PdoStudentRepository implements StudentRepository
         $insertQuery = 'INSERT INTO students (name, birth_date) VALUES (:name, :birth_date)';
         $statement = $this->connection->prepare($insertQuery);
 
-        if(!$statement) {
+        if (!$statement) {
             throw new RuntimeException($this->connection->errorInfo()[2]);
         }
 
@@ -120,5 +120,28 @@ class PdoStudentRepository implements StudentRepository
         $statement->bindValue(1, $student->getId(), PDO::PARAM_INT);
 
         return $statement->execute();
+    }
+
+    public function studentsWithPhones(): array
+    {
+        $sqlQuery = 'SELECT students.id, 
+                            students.name, 
+                            students.birth_date, 
+                            phones.id AS phones_id,
+                            phones.area_code,
+                            phones.number
+                            FROM students 
+                            JOIN phones ON students.id = phones.student_id';
+        $statement = $this->connection->query($sqlQuery);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $studentList = [];
+
+        foreach ($result as $student) {
+            if (array_key_exists($student['id'], $studentList)) {
+                $phone = new Phone($student['id'], $student['area_code'], $student['number']);
+            }
+        }
+
+        return $studentList;
     }
 }
