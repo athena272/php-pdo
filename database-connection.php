@@ -1,14 +1,24 @@
 <?php
 
-$databasePath = __DIR__ . DIRECTORY_SEPARATOR . 'database.sqlite';
+require_once 'vendor/autoload.php';
 
-try {
-    $pdo = new PDO("sqlite:$databasePath");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "✅ Successfully connected to the SQLite database.";
-} catch (PDOException $e) {
-    echo "❌ Failed to connect to the SQLite database: " . $e->getMessage();
-    exit();
-}
+use Athena272\Pdo\Infrastructure\Persistence\ConnectionCreator;
 
-$pdo->exec('CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, birth_date TEXT);');
+$connection = ConnectionCreator::createConnection();
+$createTableSql = '
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        birth_date TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS phones (
+        id INTEGER PRIMARY KEY,
+        area_code TEXT,
+        number TEXT,
+        student_id INTEGER,
+        FOREIGN KEY(student_id) REFERENCES students(id)
+    );
+';
+
+$connection->exec($createTableSql);
