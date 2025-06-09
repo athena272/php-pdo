@@ -2,6 +2,7 @@
 
 namespace Athena272\Pdo\Infrastructure\Repository;
 
+use Athena272\Pdo\Domain\Models\Phone;
 use Athena272\Pdo\Domain\Models\Student;
 use Athena272\Pdo\Domain\Repository\StudentRepository;
 use DateTimeInterface;
@@ -43,14 +44,37 @@ class PdoStudentRepository implements StudentRepository
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
-            $studentList[] = new Student(
+            $student = new Student(
                 $studentData['id'],
                 $studentData['name'],
                 new DateTimeImmutable($studentData['birth_date']),
             );
+
+            $this->fillPhonesOf($student);
+
+            $studentList[] = $student;
         }
 
         return $studentList;
+    }
+
+    private function fillPhonesOf(Student $student): void
+    {
+        $sqlQuery = 'SELECT id, area_code, number FROM phones where student_id = :student_id';
+        $statement = $this->connection->prepare($sqlQuery);
+        $statement->bindValue('student_id', $student->getId());
+        $statement->execute();
+
+        $phoneDataList = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($phoneDataList as $phoneData) {
+            $phone = new Phone(
+                $phoneData['id'],
+                $phoneData['area_code'],
+                $phoneData['number']
+            );
+
+            $student->addPhone($phone);
+        }
     }
 
     public function save(Student $student): bool
