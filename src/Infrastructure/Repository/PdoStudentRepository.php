@@ -5,6 +5,7 @@ namespace Athena272\Pdo\Infrastructure\Repository;
 use Athena272\Pdo\Domain\Models\Student;
 use Athena272\Pdo\Domain\Repository\StudentRepository;
 use DateTimeInterface;
+use RunTimeException;
 use PDO;
 use PDOStatement;
 use DateTimeImmutable;
@@ -65,6 +66,10 @@ class PdoStudentRepository implements StudentRepository
     {
         $insertQuery = 'INSERT INTO students (name, birth_date) VALUES (:name, :birth_date)';
         $statement = $this->connection->prepare($insertQuery);
+
+        if(!$statement) {
+            throw new RuntimeException($this->connection->errorInfo()[2]);
+        }
 
         $success = $statement->execute([
             ':name' => $student->getName(),
